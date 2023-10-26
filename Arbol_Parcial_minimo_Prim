@@ -1,0 +1,39 @@
+#Practica #4: Arbol Parcial minimo de Prim.
+
+# Grafo representado como un diccionario de adyacencia
+grafo = {
+    'A': {'B': 2, 'D': 3},
+    'B': {'A': 2, 'D': 4, 'E': 3},
+    'C': {'E': 5},
+    'D': {'A': 3, 'B': 4},
+    'E': {'B': 3, 'C': 5}
+}
+
+# Función para encontrar la arista con el menor peso
+def encontrar_minimo(visitados, grafo):
+    minimo = float('inf')
+    for nodo in visitados:
+        for vecino, peso in grafo[nodo].items():
+            if vecino not in visitados and peso < minimo:
+                minimo = peso
+                minimo_nodo = (nodo, vecino)
+    return minimo_nodo, minimo
+
+# Función del algoritmo de Prim para encontrar el MST
+def prim(grafo):
+    arbol_expansion = []
+    nodo_inicial = list(grafo.keys())[0]
+    visitados = {nodo_inicial}
+    
+    while len(visitados) < len(grafo):
+        arista, peso = encontrar_minimo(visitados, grafo)
+        arbol_expansion.append((arista, peso))
+        visitados.add(arista[1])
+    
+    return arbol_expansion
+
+# Obtener el MST
+arbol_expansion = prim(grafo)
+print("Árbol de Expansión Mínima (MST) de Prim:")
+for arista, peso in arbol_expansion:
+    print(arista, "-", peso)
